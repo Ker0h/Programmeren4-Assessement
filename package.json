@@ -1,0 +1,30 @@
+{
+  "name": "programmeren4-assessement",
+  "version": "1.0.0",
+  "description": "Programmeren4-Assessement",
+  "main": "app.js",
+  "scripts": {
+    "default_test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ker0h/Programmeren4-Assessement.git"
+  },
+  "author": "Ker0h",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ker0h/Programmeren4-Assessement/issues"
+  },
+  "homepage": "https://github.com/Ker0h/Programmeren4-Assessement#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mysql": "^2.15.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "mocha": "^5.1.1"
+  }
+}
