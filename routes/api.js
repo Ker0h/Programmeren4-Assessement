@@ -13,8 +13,8 @@ router.route('/login').post( function(req, res) {
         //
         // Get body params or ''
         //
-        var username = req.body.username || '';
-        var password = req.body.password || '';
+        let username = req.body.username || '';
+        let password = req.body.password || '';
 
         //
         // Check in datasource for user & password combo.

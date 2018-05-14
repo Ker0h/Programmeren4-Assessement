@@ -15,6 +15,15 @@ app.use(expressJWT({
     path: ['/api/login']
 }))
 
+app.use(function(err, req, res, next) {
+    if(err.name === 'UnauthorizedError') {
+        res.status(err.status).send({message:err.message});
+        console.log("works")
+        return;
+    }
+    next();
+});
+
 app.use('/api', api)
 
 app.listen(config.port)
