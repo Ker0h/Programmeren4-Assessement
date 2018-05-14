@@ -3,18 +3,17 @@ const router = express.Router();
 const auth =  require('../auth/authentication');
 const db = require('../datasource/dbCon');
 
-router.post('/studentenhuis', function(req, res, next){
+router.post('/', function(req, res, next){
 
 });
 
 
-router.get('/studentenhuis', function(req, res) {
+router.get('/', function(req, res) {
     let result = [];
         result = db.query("SELECT * FROM studentenhuis", function (err, result, fields) {
             if (err) throw err;
-            console.log(result);
+            res.json(JSON.stringify(result))
         });
-    res.json(result);
 });
 
 
