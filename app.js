@@ -33,3 +33,5 @@ app.use(function(err, req, res, next) {
 app.use('/api', api);
 
 app.listen(config.port);
+
+module.exports = app
