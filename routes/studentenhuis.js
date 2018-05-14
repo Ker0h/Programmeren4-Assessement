@@ -19,10 +19,12 @@ router.get('/', function(req, res) {
 router.get('/:huisId?', function(req, res) {
 
     const huisId = req.params.huisId || '';
+
+    console.log(huisId)
     let result = [];
 
     if( huisId ) {
-        db.query("SELECT * from `studentenhuis` WHERE `ID` = " + huisId + ";", function (err, result){
+        db.query("SELECT * FROM studentenhuis WHERE ID = " + "'" + huisId + "'", function (err, result){
             if (err) {
                 res.status(404).json({
                     "msg": "Niet gevonden (huisId bestaat niet)",
