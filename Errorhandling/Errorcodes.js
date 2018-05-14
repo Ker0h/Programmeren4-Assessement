@@ -15,13 +15,6 @@ function notFound(res) {
     })
 }
 
-function conflict(res) {
-    res.status(409).json({
-        "msg": "Conflict (Gebruiker mag deze data niet wijzigen)",
-        "code": 409,
-        "datetime": new Date().format("d-M-Y H:m:s")
-    })
-}
 
 function notAuthorized(res){
     res.status(401).json({
@@ -50,8 +43,7 @@ function emailInvalid(res) {
 module.exports = {
     missingProp,
     notFound,
-    conflict,
-    notAuthorized
+    notAuthorized,
     emailTaken,
     emailInvalid
 };
