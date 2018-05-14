@@ -3,13 +3,12 @@ const router = express.Router()
 const jwt = require('jwt-simple')
 const auth = require('../auth/authentication.js')
 const studentenhuis = require('../routes/studentenhuis.js')
+const db = require('../datasource/dbCon');
 
 //
 // Login with {"username":"<username>", "password":"<password>"}
 //
-router.route('/login')
-
-    .post( function(req, res) {
+router.route('/login').post( function(req, res) {
 
         //
         // Get body params or ''
@@ -21,22 +20,28 @@ router.route('/login')
         // Check in datasource for user & password combo.
         //
         //
-        result = users.filter(function (user) {
-            if( user.username === username && user.password === password) {
-                return ( user );
+        db.query('SELECT email, password FROM user WHERE email = ?', [username], function (error, rows, fields) {
+            if (error) {
+                res.status(500).json(error)
             }
-        });
 
-        // Debug
-        console.log("result: " +  JSON.stringify(result[0]));
+            console.log(rows)
 
-        // Generate JWT
-        if( result[0] ) {
-            res.status(200).json({"token" : auth.encodeToken(username), "username" : username});
-        } else {
-            res.status(401).json({"error":"Invalid credentials, bye"})
-        }
-
+            if (username == rows[0].email && password == rows[0].password) {
+                var token = auth.encodeToken(username);
+                res.status(200).json({
+                    "token": token,
+                    "status": 200,
+                    "parameters": res.body
+                });
+            } else {
+                res.status(401).json({
+                    "msg": "The credentials you entered are wrong",
+                    "status": 401,
+                    "parameters": res.body
+                })
+            }
+        })
 });
 
 

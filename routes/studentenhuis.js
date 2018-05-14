@@ -20,8 +20,8 @@ router.get('/studentenhuis/:huisId?', function(req, res, next) {
     let result = [];
 
     if( huisId ) {
-        console.log('huisId')
-        db.query()
+        console.log('huisId');
+        db.query();
     } else {
         result = db;
     }
