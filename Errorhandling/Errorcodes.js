@@ -23,9 +23,18 @@ function conflict(res) {
     })
 }
 
+function notAuthorized(res){
+    res.status(401).json({
+        "msg": "U bent niet geauthoriseerd om deze actie uit te voeren",
+        "status": 401,
+        "datetime": new Date().format("d-M-Y H:m:s")
+    })
+}
+
 
 module.exports = {
     missingProp,
     notFound,
-    conflict
+    conflict,
+    notAuthorized
 };
