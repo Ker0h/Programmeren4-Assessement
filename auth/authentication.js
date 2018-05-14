@@ -31,12 +31,14 @@ function decodeToken(token, cb) {
         }
 
         // Return
-        cb(null, payload);
+        return payload
 
     } catch(err) {
-        cb(err, null);
+        console.log(err)
     }
 }
+
+
 
 module.exports = {
     encodeToken,

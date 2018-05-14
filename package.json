@@ -24,7 +24,9 @@
     "jwt-simple": "^0.5.1",
     "moment": "^2.22.1",
     "mysql": "^2.15.0",
-    "npm": "^6.0.1"
+    "node.date-time": "^1.2.2",
+    "npm": "^6.0.1",
+    "regex-email": "^1.0.2"
   },
   "devDependencies": {
     "chai": "^4.1.2",
