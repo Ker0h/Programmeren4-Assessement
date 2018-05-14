@@ -1,8 +1,8 @@
-const express = require('express')
-const router = express.Router()
-const jwt = require('jwt-simple')
-const auth = require('../auth/authentication.js')
-const studentenhuis = require('../routes/studentenhuis.js')
+const express = require('express');
+const router = express.Router();
+const jwt = require('jwt-simple');
+const auth = require('../auth/authentication.js');
+const studentenhuis = require('../routes/studentenhuis.js');
 
 //
 // Login with {"username":"<username>", "password":"<password>"}
@@ -21,6 +21,7 @@ router.route('/login')
         // Check in datasource for user & password combo.
         //
         //
+        var result = "";
         result = users.filter(function (user) {
             if( user.username === username && user.password === password) {
                 return ( user );
@@ -40,4 +41,4 @@ router.route('/login')
 });
 
 
-module.exports = router
+module.exports = router;
