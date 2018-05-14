@@ -8,7 +8,6 @@ router.post('/', function(req, res, next){
 
 
 router.get('/', function(req, res) {
-
         db.query("SELECT * FROM studentenhuis", function (err, result) {
             if (err) throw err;
             res.json(result)
@@ -17,7 +16,6 @@ router.get('/', function(req, res) {
 
 
 router.get('/:huisId?', function(req, res) {
-
     const huisId = req.params.huisId || '';
 
     if( huisId ) {
@@ -37,8 +35,6 @@ router.get('/:huisId?', function(req, res) {
             "parameters" : res.body
         })
     }
-
-
 });
 
 
