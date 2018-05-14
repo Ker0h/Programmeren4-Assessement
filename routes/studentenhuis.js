@@ -9,14 +9,17 @@ const error = require('../Errorhandling/Errorcodes')
 
         let naam = req.body.naam || '';
         let adres = req.body.adres || '';
-        if (huisId && naam !== '' && adres !== '') {
+        if (naam !== '' && adres !== '') {
             db.query("INSERT INTO `studentenhuis` (Naam, Adres, UserID) VALUES ('" + naam + "', '" + adres + "', 1);", function (err, rows, fields) {
                 if (err) throw err;
                 let row = rows.insertId;
                 selectId(row, res)
             });
         }
-        error.missingProp(res)
+        else {
+            error.missingProp(res)
+        }
+
     });
 
     router.get('/', (req, res) => {
