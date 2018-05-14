@@ -19,14 +19,12 @@ const error = require('../Errorhandling/Errorcodes')
         error.missingProp(res)
     });
 
-
     router.get('/', (req, res) => {
         db.query("SELECT * FROM studentenhuis", function (err, result) {
             if (err) throw err;
             res.json(result)
         });
     });
-
 
     router.get('/:huisId?', (req, res) => {
         const huisId = req.params.huisId || '';
@@ -42,7 +40,6 @@ const error = require('../Errorhandling/Errorcodes')
         let row
         if (huisId && naam !== '' && adres !== '') {
             db.query("SELECT UserID FROM studentenhuis WHERE ID = " + huisId + ";", function (err, rows) {
-
                 if (rows = '') {
                     error.notFound(res)
                 }
@@ -54,15 +51,13 @@ const error = require('../Errorhandling/Errorcodes')
                 })
             }
             else {
-
+                error.conflict(res)
             }
         }
         else {
             error.missingProp(res)
         }
-
     });
-
 
 
 function selectId(huisId, res) {
@@ -76,7 +71,5 @@ function selectId(huisId, res) {
         }
     })
 }
-
-
 
 module.exports = router;

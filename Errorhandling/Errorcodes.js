@@ -1,3 +1,4 @@
+const format = require('node.date-time');
 function missingProp(res) {
     res.status(412).json({
         "msg": "Een of meer properties in de request body ontbreken of zijn foutief",
@@ -14,8 +15,17 @@ function notFound(res) {
     })
 }
 
+function conflict(res) {
+    res.status(409).json({
+        "msg": "Conflict (Gebruiker mag deze data niet wijzigen)",
+        "code": 409,
+        "datetime": new Date().format("d-M-Y H:m:s")
+    })
+}
+
 
 module.exports = {
     missingProp,
-    notFound
+    notFound,
+    conflict
 };
