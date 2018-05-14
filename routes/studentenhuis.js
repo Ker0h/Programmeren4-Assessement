@@ -16,7 +16,7 @@ router.get('/', function(req, res) {
 });
 
 
-router.get('/studentenhuis/:huisId?', function(req, res) {
+router.get('/:huisId?', function(req, res) {
 
     const huisId = req.params.huisId || '';
     let result = [];
