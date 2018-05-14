@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../datasource/dbCon');
 var dateTime = require('node.date-time');
 
-try {
+
     router.post('/', (req, res) => {
 
         let naam = req.body.naam || '';
@@ -79,13 +79,5 @@ try {
         }
 
     });
-}
-catch (UnauthorizedError){
-    res.status(401).json({
-        "msg": "Niet geautoriseerd (geen valid token)",
-        "code": 401,
-        "datetime": new Date().format("d-M-Y H:m:s")
-    })
-}
 
 module.exports = router;
