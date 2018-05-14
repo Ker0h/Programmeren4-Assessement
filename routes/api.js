@@ -4,22 +4,6 @@ const jwt = require('jwt-simple')
 const auth = require('../auth/authentication.js')
 const studentenhuis = require('../routes/studentenhuis.js')
 
-router.all( new RegExp("[^(\/login)]"), function (req, res, next) {
-    console.log("VALIDATE TOKEN")
-
-    var token = (req.header('X-Access-Token')) || '';
-
-    auth.decodeToken(token, (err, payload) => {
-        if (err) {
-            console.log('Error handler: ' + err.message);
-            res.status((err.status || 401 )).json({error: new Error("Not authorised").message});
-        } else {
-            next();
-        }
-    });
-});
-
-
 //
 // Login with {"username":"<username>", "password":"<password>"}
 //
