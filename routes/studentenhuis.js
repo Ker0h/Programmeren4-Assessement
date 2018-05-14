@@ -76,13 +76,50 @@ router.put('/:huisId?', (req, res) => {
     }
 });
 
+//Delete studenthouse
+router.delete('/:huisId?', (req, res) => {
+    let houseId = req.params.huisId || '';
+    let name = req.body.naam || '';
+    let address = req.body.adres || '';
+
+    let token = req.get('Authorization')
+    token = token.substring(7)
+    let email = auth.decodeToken(token)
+    email = email.sub
+
+    if (houseId && name !== '' && address !== '') {
+        //Get Current user ID
+        db.query("SELECT ID FROM user WHERE Email = ?", [email], function (err, rows) {
+            let currentUserId = rows[0].ID
+
+            //Get existing user ID
+            db.query("SELECT UserID FROM studentenhuis WHERE ID = ?", [houseId], function (err, rows) {
+                let existingUserId = rows[0].UserID
+
+                if (currentUserId == existingUserId) {
+                    db.query("DELETE FROM studentenhuis WHERE ID = ?", [houseId], function (err, result) {
+                        res.status(200).json({
+                            "msg": "Huis succesvol verwijderd",
+                            "status": "200",
+                            "datetime": new Date().format("d-M-Y H:m:s")
+                        })
+                    })
+                }else{
+                    error.notAuthorized(res)
+                }
+            })
+        })
+    } else {
+        error.missingProp(res)
+    }
+});
+
 
 function selectId(houseId, res) {
     db.query("SELECT * FROM studentenhuis WHERE ID = ?", [houseId], (err, result) => {
         if (result.length > 0) {
             res.json(result);
         } else {
-            console.log("test")
             error.notFound(res)
         }
     })
