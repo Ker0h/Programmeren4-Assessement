@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
     let result = [];
         result = db.query("SELECT * FROM studentenhuis", function (err, result) {
             if (err) throw err;
-            res.json(JSON.stringify(result))
+            res.json(result)
         });
 });
 
@@ -19,15 +19,15 @@ router.get('/', function(req, res) {
 router.get('/:huisId?', function(req, res) {
 
     const huisId = req.params.huisId || '';
+
+    console.log(huisId)
     let result = [];
 
     if( huisId ) {
-        console.log('huisId');
-        db.query("SELECT * from `studentenhuis` WHERE `ID` = " + huisId + ";", function (err, result){
+        db.query("SELECT * FROM studentenhuis WHERE ID = " + "'" + huisId + "'", function (err, result){
             if (err) {
                 res.status(404).json({
                     "msg": "Niet gevonden (huisId bestaat niet)",
-                    "status": 404,
                     "parameters": res.body
                 })
             }
