@@ -14,7 +14,8 @@ app.use(bodyParser.json())
 app.use(expressJWT({
     secret: config.secretkey
 }).unless({
-    path: ['/api/login']
+    path: ['/api/login'],
+    path: ['/api/register']
 }));
 
 app.use(function(err, req, res, next) {

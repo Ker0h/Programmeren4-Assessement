@@ -30,11 +30,28 @@ function notAuthorized(res){
         "datetime": new Date().format("d-M-Y H:m:s")
     })
 }
+function emailTaken(res) {
+    res.status(409).json({
+        "msg": "Conflict (email al in gebruik)",
+        "code": 409,
+        "datetime": new Date().format("d-M-Y H:m:s")
+    })
 
+}
+function emailInvalid(res) {
+    res.status(409).json({
+        "msg": "Conflict (ongeldig emailadres)",
+        "code": 409,
+        "datetime": new Date().format("d-M-Y H:m:s")
+    })
+
+}
 
 module.exports = {
     missingProp,
     notFound,
     conflict,
     notAuthorized
+    emailTaken,
+    emailInvalid
 };
