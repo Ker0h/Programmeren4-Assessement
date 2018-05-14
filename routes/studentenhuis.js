@@ -20,24 +20,27 @@ router.get('/:huisId?', function(req, res) {
 
     const huisId = req.params.huisId || '';
 
-    console.log(huisId)
+    console.log(huisId + "huisid");
     let result = [];
 
     if( huisId ) {
-        db.query("SELECT * FROM studentenhuis WHERE ID = " + "'" + huisId + "'", function (err, result){
+        result = db.query("SELECT * FROM studentenhuis WHERE ID = "  + huisId + ";", function (err, result){
             if (err) {
                 res.status(404).json({
                     "msg": "Niet gevonden (huisId bestaat niet)",
                     "parameters": res.body
                 })
             }
-            console.log(result);
+            res.json(result);
+            console.log(res);
+
+
         })
     } else {
-        result = db;
+        res = db;
     }
 
-    res.json(result);
+
 });
 
 
