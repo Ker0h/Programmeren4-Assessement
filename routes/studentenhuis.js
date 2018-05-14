@@ -2,7 +2,14 @@ const express = require('express');
 const router = express.Router();
 const db = require('../datasource/dbCon');
 
-router.post('/', function(req, res, next){
+router.post('/', function(req, res){
+
+    let naam = req.body.naam || '';
+    let adres = req.body.adres || '';
+    db.query("INSERT INTO `studentenhuis` (Naam, Adres, UserID) VALUES ('" + naam + "', '" + adres + "', 1);", function (err, result) {
+        if (err) throw err;
+        res.json(result)
+    });
 
 });
 
