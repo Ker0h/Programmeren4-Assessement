@@ -6,9 +6,19 @@ router.post('/', function(req, res){
 
     let naam = req.body.naam || '';
     let adres = req.body.adres || '';
-    db.query("INSERT INTO `studentenhuis` (Naam, Adres, UserID) VALUES ('" + naam + "', '" + adres + "', 1);", function (err, result) {
+    db.query("INSERT INTO `studentenhuis` (Naam, Adres, UserID) VALUES ('" + naam + "', '" + adres + "', 1);", function (err ,rows, fields) {
         if (err) throw err;
-        res.json(result)
+        //res.json(result);
+        var row = rows.insertId;
+        db.query("SELECT * FROM studentenhuis WHERE ID = "  + row + ";", function (err, result){
+            if (err) {
+                res.status(404).json({
+                    "msg": "Niet gevonden (huisId bestaat niet)",
+                    "parameters": res.body
+                })
+            }
+            res.json(result);
+        });
     });
 
 });
