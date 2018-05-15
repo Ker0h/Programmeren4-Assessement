@@ -37,17 +37,17 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:huisId?', (req, res) => {
-    const houseId = req.params.huisId || '';
+router.get('/:houseId?', (req, res) => {
+    const houseId = req.params.houseId || '';
     if (houseId) {
         selectId(houseId, res)
     }
 });
 
-router.put('/:huisId', (req, res) => {
-    let houseId = req.params.huisId || '';
-    let name = req.body.naam || '';
-    let address = req.body.adres || '';
+router.put('/:houseId', (req, res) => {
+    let houseId = req.params.houseId || '';
+    let name = req.body.name || '';
+    let address = req.body.address || '';
 
     let token = req.get('Authorization')
     token = token.substring(7)
@@ -79,10 +79,8 @@ router.put('/:huisId', (req, res) => {
 });
 
 //Delete Dorm
-router.delete('/:huisId', (req, res) => {
-    let houseId = req.params.huisId || '';
-    let name = req.body.naam || '';
-    let address = req.body.adres || '';
+router.delete('/:houseId', (req, res) => {
+    let houseId = req.params.houseId || '';
 
     let token = req.get('Authorization')
     token = token.substring(7)

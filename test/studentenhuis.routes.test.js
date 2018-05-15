@@ -4,6 +4,7 @@ const app = require('../app')
 const db = require('../datasource/dbCon')
 
 let validToken
+let amount
 
 chai.should()
 chai.use(chaiHttp)
@@ -62,7 +63,7 @@ describe('Studentenhuis API POST', function () {
     it('should throw an error when adres is missing', (done) => {
         chai.request(app)
             .post('/api/studentenhuis')
-            .set('Authorization', require('./authentication.routes.test').token)
+            .set('Authorization', validToken)
             .send({
                 "name": "Huize Pils Genoeg"
             })
@@ -150,53 +151,106 @@ describe('Studentenhuis API PUT', function() {
     this.timeout(10000)
 
     it('should throw an error when using invalid JWT token', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        chai.request(app)
+            .put('/api/studentenhuis/1')
+            .set('Authorization', 'test')
+            .send({
+                "name": "Lovensdijk",
+                "address": "Lovensdijkstraat, Breda"
+            })
+            .end((err, res) => {
+                res.should.have.status(401)
+                done()
+            })
     })
 
     it('should return a studentenhuis with ID when posting a valid object', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        chai.request(app)
+            .put('/api/studentenhuis/1')
+            .set('Authorization', validToken)
+            .send({
+                "name": "Lovensdijk",
+                "address": "Lovensdijkstraat, Breda"
+            })
+            .end((err, res) => {
+                res.should.have.status(200)
+                res.body.should.be.a('array')
+                res.body.should.be.length(1)
+                done()
+            })
     })
 
     it('should throw an error when naam is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        chai.request(app)
+            .put('/api/studentenhuis/1')
+            .set('Authorization', validToken)
+            .send({
+                "address": "Lovensdijkstraat, Breda"
+            })
+            .end((err, res) => {
+                res.should.have.status(412)
+                done()
+            })
     })
 
     it('should throw an error when adres is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        chai.request(app)
+        .put('/api/studentenhuis/1')
+        .set('Authorization', validToken)
+        .send({
+            "name": "Lovensdijk",
+        })
+        .end((err, res) => {
+            res.should.have.status(412)
+            done()
+        })
     })
 })
 
 describe('Studentenhuis API DELETE', function() {
     before(function () {
         validToken = require('./authentication.routes.test').token
+
+        chai.request(app)
+            .post('/api/studentenhuis')
+            .set('Authorization', validToken)
+            .send({
+                "name": "TestHuis",
+                "address": "Testweg"
+            })
+            .end((err, res) => {
+                
+            })
+        
+        chai.request(app)
+            .get('/api/studentenhuis')
+            .set('Authorization', validToken)
+            .end((err, res) => {
+                amount = res.body.length
+            })
+            
     })
 
     this.timeout(10000)
 
     it('should throw an error when using invalid JWT token', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        chai.request(app)
+            .delete('/api/studentenhuis/1')
+            .set('Authorization', 'test')
+            .end((err, res) => {
+                res.should.have.status(401)
+                done()
+            })
     })
 
     it('should return a studentenhuis when posting a valid object', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        chai.request(app)
+            .delete('/api/studentenhuis/' + amount)
+            .set('Authorization', validToken)
+            .end((err, res) => {
+                res.should.have.status(200)
+                done()
+            })
     })
 
     it('should throw an error when naam is missing', (done) => {
