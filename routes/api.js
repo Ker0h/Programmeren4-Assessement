@@ -11,26 +11,23 @@ let regex = require('regex-email')
 // Login with {"username":"<username>", "password":"<password>"}
 //
 router.route('/login').post( function(req, res) {
-
-        //
-        // Get body params or ''
-        //
-        let username = req.body.username || '';
+        let email = req.body.email || '';
         let password = req.body.password || '';
 
-        //
-        // Check in datasource for user & password combo.
-        //
-        //
-        db.query('SELECT email, password FROM user WHERE email = ?', [username], function (error, rows, fields) {
-            if (error) {
-                res.status(500).json(error)
+        if(regex.test(email) === true){
+            db.query('SELECT email, password FROM user WHERE email = ?', [email], function (err, rows, fields) {
+            if (err) {
+                res.status(500).json(err)
+                return;
             }
 
-            console.log(rows)
+            if(rows.length < 1){
+                error.notFound(res)
+                return;
+            }
 
-            if (username == rows[0].email && password == rows[0].password) {
-                var token = auth.encodeToken(username);
+            if (email == rows[0].email && password == rows[0].password) {
+                var token = auth.encodeToken(email);
                 res.status(200).json({
                     "token": token,
                     "status": 200,
@@ -38,38 +35,50 @@ router.route('/login').post( function(req, res) {
                 });
             } else {
                 error.notAuthorized(res)
+                return;
             }
         })
+    }
 });
 
 router.route('/register').post( function(req, res){
-    let firstname = req.body.firstname || '';
-    let lastname = req.body.lastname || '';
+    let firstname = req.body.voornaam || '';
+    let lastname = req.body.achternaam || '';
     let email = req.body.email || '';
     let password = req.body.password || '';
     if (firstname !== '' && lastname !== '' && email !== '' && password !== '') {
+        if(firstname.length < 2 || lastname.length < 2){
+            error.missingProp(res)
+            return;
+        }
+
         if (regex.test(email) === true) {
             db.query("SELECT Email FROM user WHERE Email = ?", [email], function(err, result) {
                 if(result.length > 0){
                     error.emailTaken(res)
-                }
-                else{
+                    return;
+                }else{
                     db.query("INSERT INTO `user` (Voornaam, Achternaam, Email, Password) VALUES (?, ?, ?, ?)" ,[firstname, lastname, email, password], function(err, result) {
-                        console.log(result);
                         db.query("SELECT Voornaam, Achternaam, Email FROM user WHERE Email = ?",[email], function(err, result) {
                             if (err) throw err;
-                            res.json(result)})
+                        })
                     })
                     let token = auth.encodeToken(email)
+                    res.json({
+                        token: token
+                    })
+                    return;
                 }
             })
         }
         else{
             error.emailInvalid(res)
+            return;
         }
     }
     else{
         error.missingProp(res)
+        return;
     }
 });
 
