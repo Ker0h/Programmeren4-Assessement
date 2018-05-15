@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const maaltijd = require('./maaltijd')
 const db = require('../datasource/dbCon');
 const format = require('node.date-time');
 const error = require('../Errorhandling/Errorcodes')
@@ -124,5 +125,7 @@ function selectId(houseId, res) {
         }
     })
 }
+
+router.use('/:huisId/maaltijd', maaltijd)
 
 module.exports = router;
