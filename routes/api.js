@@ -22,6 +22,7 @@ router.route('/login').post( function(req, res) {
         // Check in datasource for user & password combo.
         //
         //
+    if(username !== '' && password !== '') {
         db.query('SELECT email, password FROM user WHERE email = ?', [username], function (error, rows, fields) {
             if (error) {
                 res.status(500).json(error)
@@ -44,7 +45,13 @@ router.route('/login').post( function(req, res) {
                 })
             }
         })
-});
+    }
+    else {
+        error.missingProp(res)
+    }
+})
+
+
 
 router.route('/register').post( function(req, res){
     let firstname = req.body.firstname || '';

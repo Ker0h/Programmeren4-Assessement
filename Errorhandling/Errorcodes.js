@@ -40,10 +40,20 @@ function emailInvalid(res) {
 
 }
 
+function noResult(res) {
+    res.status(404).json({
+        "msg": "geen resultaten gevonden",
+        "code": 404,
+        "datetime": new Date().format("d-M-Y H:m:s")
+    })
+
+}
+
 module.exports = {
     missingProp,
     notFound,
     notAuthorized,
     emailTaken,
-    emailInvalid
+    emailInvalid,
+    noResult
 };
