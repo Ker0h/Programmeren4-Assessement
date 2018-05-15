@@ -99,7 +99,7 @@ router.put('/:maaltijdId', (req, res) => {
                         })
                     })
                 }else{
-                    error.notAuthorized(res)
+                    error.InsufficientRights(res)
                 }
             })
         })
@@ -107,6 +107,8 @@ router.put('/:maaltijdId', (req, res) => {
         error.missingProp(res)
     }
 });
+
+router.delete()
 
 
 function checkId(houseId, res) {

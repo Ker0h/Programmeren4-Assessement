@@ -60,7 +60,7 @@ router.put('/:huisId', (req, res) => {
             let currentUserId = rows[0].ID
 
             //Get existing user ID
-            checkId()
+            checkId(houseId, res)
             db.query("SELECT UserID FROM studentenhuis WHERE ID = ?", [houseId], function (err, rows) {
                 let existingUserId = rows[0].UserID
 
@@ -69,7 +69,7 @@ router.put('/:huisId', (req, res) => {
                         selectId(houseId, res)
                     })
                 }else{
-                    error.notAuthorized(res)
+                    error.InsufficientRights(res)
                 }
             })
         })
@@ -108,7 +108,7 @@ router.delete('/:huisId', (req, res) => {
                         })
                     })
                 }else{
-                    error.notAuthorized(res)
+                    error.InsufficientRights(res)
                 }
             })
         })
