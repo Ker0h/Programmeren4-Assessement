@@ -41,6 +41,8 @@ router.route('/login').post( function(req, res) {
     }
 });
 
+
+
 router.route('/register').post( function(req, res){
     let firstname = req.body.voornaam || '';
     let lastname = req.body.achternaam || '';
