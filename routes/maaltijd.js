@@ -109,7 +109,42 @@ router.put('/:maaltijdId', (req, res) => {
 });
 
 router.delete('/:maaltijdId', (req, res) => {
+    let maaltijdId = req.params.maaltijdId || '';
+    let houseId = req.params.huisId || '';
 
+    db.query("SELECT * FROM maaltijd WHERE ID = ?", [maaltijdId], (err, result) => {
+        if (result.length > 0) {
+            //Get Current user ID
+            let token = req.get('Authorization')
+            token = token.substring(7)
+            let email = auth.decodeToken(token)
+            email = email.sub
+            db.query("SELECT ID FROM user WHERE Email = ?", [email], function (err, rows) {
+                let currentUserId = rows[0].ID
+
+                //Get existing user ID
+                checkId(houseId, res)
+                db.query("SELECT UserID FROM maaltijd WHERE ID = ?", [maaltijdId], function (err, rows) {
+                    let existingUserId = rows[0].UserID
+
+                    if (currentUserId === existingUserId) {
+                        db.query("DELETE FROM maaltijd WHERE ID = ?", [maaltijdId], function (err, result) {
+                            res.status(200).json({
+                                "msg": "maaltijd succesvol verwijderd",
+                                "status": "200",
+                                "datetime": new Date().format("d-M-Y H:m:s")
+                            })
+                        })
+                    }else{
+                        error.InsufficientRights(res)
+                    }
+                })
+            })
+
+        } else {
+            error.notFound(res)
+        }
+    })
 })
 
 
