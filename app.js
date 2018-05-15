@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const api = require('./routes/api.js')
 const config = require('./config.js')
 const format = require('node.date-time');
+const error = require('./Errorhandling/Errorcodes')
 
 
 let app = express()
@@ -14,16 +15,12 @@ app.use(bodyParser.json())
 app.use(expressJWT({
     secret: config.secretkey
 }).unless({
-    path: ['/api/login','/api/register']
+    path: ['/api/login', '/api/register']
 }));
 
 app.use(function(err, req, res, next) {
     if(err.name === 'UnauthorizedError') {
-        res.status(401).json({
-            "msg": "Niet geautoriseerd (geen valid token)",
-            "code": 401,
-            "datetime": new Date().format("d-M-Y H:m:s")
-        })
+        error.notAuthorized(res)
         return;
     }
     next();

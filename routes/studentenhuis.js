@@ -7,8 +7,8 @@ const error = require('../Errorhandling/Errorcodes')
 const auth = require('../auth/authentication')
 
 router.post('/', (req, res) => {
-    let name = req.body.naam || '';
-    let address = req.body.adres || '';
+    let name = req.body.name || '';
+    let address = req.body.address || '';
 
     let token = req.get('Authorization')
     token = token.substring(7)
