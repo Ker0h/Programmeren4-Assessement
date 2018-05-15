@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const maaltijd = require('./maaltijd')
 const db = require('../datasource/dbCon');
 const format = require('node.date-time');
 const error = require('../Errorhandling/Errorcodes')
@@ -43,7 +44,7 @@ router.get('/:huisId?', (req, res) => {
     }
 });
 
-router.put('/:huisId?', (req, res) => {
+router.put('/:huisId', (req, res) => {
     let houseId = req.params.huisId || '';
     let name = req.body.naam || '';
     let address = req.body.adres || '';
@@ -76,8 +77,8 @@ router.put('/:huisId?', (req, res) => {
     }
 });
 
-//Delete studenthouse
-router.delete('/:huisId?', (req, res) => {
+//Delete Dorm
+router.delete('/:huisId', (req, res) => {
     let houseId = req.params.huisId || '';
     let name = req.body.naam || '';
     let address = req.body.adres || '';
@@ -124,5 +125,7 @@ function selectId(houseId, res) {
         }
     })
 }
+
+router.use('/:huisId/maaltijd', maaltijd)
 
 module.exports = router;
