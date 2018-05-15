@@ -81,15 +81,13 @@ router.put('/:huisId', (req, res) => {
 //Delete Dorm
 router.delete('/:huisId', (req, res) => {
     let houseId = req.params.huisId || '';
-    let name = req.body.naam || '';
-    let address = req.body.adres || '';
 
     let token = req.get('Authorization')
     token = token.substring(7)
     let email = auth.decodeToken(token)
     email = email.sub
 
-    if (houseId && name !== '' && address !== '') {
+
         //Get Current user ID
         db.query("SELECT ID FROM user WHERE Email = ?", [email], function (err, rows) {
             let currentUserId = rows[0].ID
@@ -112,9 +110,6 @@ router.delete('/:huisId', (req, res) => {
                 }
             })
         })
-    } else {
-        error.missingProp(res)
-    }
 });
 
 

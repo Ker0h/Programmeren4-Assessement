@@ -10,11 +10,10 @@ function missingProp(res) {
 function notFound(res) {
     res.status(404).json({
         "msg": "Niet gevonden",
-        "code": 412,
+        "code": 404,
         "datetime": new Date().format("d-M-Y H:m:s")
     })
 }
-
 
 function notAuthorized(res){
     res.status(401).json({
@@ -58,9 +57,19 @@ function InsufficientRights(res) {
 
 }
 
+function AlreadySigned(res) {
+    res.status(409).json({
+        "msg": "Conflict (U bent al ingeschreven)",
+        "code": 409,
+        "datetime": new Date().format("d-M-Y H:m:s")
+    })
+
+}
+
 module.exports = {
     missingProp,
     notFound,
+    AlreadySigned,
     notAuthorized,
     emailTaken,
     emailInvalid,

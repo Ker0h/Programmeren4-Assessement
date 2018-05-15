@@ -160,6 +160,6 @@ function checkId(houseId, res) {
 
 
 
-router.use('/:maaltijdId/deelnemers', deelnemers)
+router.use('/:maaltijdId', deelnemers)
 
 module.exports = router
