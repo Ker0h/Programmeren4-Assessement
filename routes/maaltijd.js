@@ -92,7 +92,7 @@ router.put('/:maaltijdId', (req, res) => {
                 let existingUserId = rows[0].UserID
 
                 if (currentUserId === existingUserId) {
-                    db.query("UPDATE maaltijd SET naam = ?, Beschrijving = ?, Ingredienten = ?, Allergie = ?, Prijs = ? WHERE ID = ?", [Name, Desc, Ingredients, Allergies, Price], function (err, result) {
+                    db.query("UPDATE maaltijd SET Naam = ?, Beschrijving = ?, Ingredienten = ?, Allergie = ?, Prijs = ? WHERE ID = ?", [Name, Desc, Ingredients, Allergies, Price, maaltijdId], function (err, result) {
                         console.log(result)
                         db.query("SELECT ID, Naam, Beschrijving, Ingredienten, Allergie, Prijs FROM maaltijd WHERE ID = ? ", [maaltijdId], (err, result) => {
                                 res.json(result)
