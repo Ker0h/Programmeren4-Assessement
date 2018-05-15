@@ -108,7 +108,9 @@ router.put('/:maaltijdId', (req, res) => {
     }
 });
 
-router.delete()
+router.delete('/:maaltijdId', (req, res) => {
+
+})
 
 
 function checkId(houseId, res) {
