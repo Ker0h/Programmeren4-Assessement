@@ -1,4 +1,4 @@
 module.exports = {
-    port: 8080 || process.env.PORT,
+    port: process.env.PORT || 8080,
     secretkey: '88tSngq*'
 }
