@@ -252,18 +252,4 @@ describe('Studentenhuis API DELETE', function() {
                 done()
             })
     })
-
-    it('should throw an error when naam is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
-    })
-
-    it('should throw an error when adres is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
-    })
 })

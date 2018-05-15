@@ -125,9 +125,7 @@ function selectId(houseId, res) {
 
 function checkId(houseId,res){
     db.query("SELECT * FROM studentenhuis WHERE ID = ?", [houseId], (err, result) => {
-        if (result.length > 0) {
-            console.log("exists")
-        } else {
+        if (!result.length > 0) {
             error.notFound(res)
         }
     })
