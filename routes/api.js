@@ -53,14 +53,14 @@ router.route('/register').post( function(req, res){
     let password = req.body.password || '';
     if (firstname !== '' && lastname !== '' && email !== '' && password !== '') {
         if (regex.test(email) === true) {
-            db.query("SELECT Email FROM user WHERE Email = '" + email + "';" ,(err, result)=> {
+            db.query("SELECT Email FROM user WHERE Email = ?", [email], function(err, result) {
                 if(result.length > 0){
                     error.emailTaken(res)
                 }
                 else{
-                    db.query("INSERT INTO `user` (Voornaam, Achternaam, Email, Password) VALUES ('" + firstname + "', '" + lastname + "', '" + email + "', '" +  password + "');" ,(err, result)=> {
+                    db.query("INSERT INTO `user` (Voornaam, Achternaam, Email, Password) VALUES (?, ?, ?, ?)" ,[firstname, lastname, email, password], function(err, result) {
                         console.log(result);
-                        db.query("SELECT Voornaam, Achternaam, Email FROM user WHERE Email = '" + email + "';", function (err, result) {
+                        db.query("SELECT Voornaam, Achternaam, Email FROM user WHERE Email = ?",[email], function(err, result) {
                             if (err) throw err;
                             res.json(result)})
                     })
