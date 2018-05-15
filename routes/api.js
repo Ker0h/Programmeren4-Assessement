@@ -37,11 +37,7 @@ router.route('/login').post( function(req, res) {
                     "parameters": res.body
                 });
             } else {
-                res.status(401).json({
-                    "msg": "The credentials you entered are wrong",
-                    "status": 401,
-                    "parameters": res.body
-                })
+                error.notAuthorized(res)
             }
         })
 });
@@ -64,6 +60,7 @@ router.route('/register').post( function(req, res){
                             if (err) throw err;
                             res.json(result)})
                     })
+                    let token = auth.encodeToken(email)
                 }
             })
         }
