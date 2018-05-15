@@ -7,8 +7,8 @@ const error = require('../Errorhandling/Errorcodes')
 const auth = require('../auth/authentication')
 
 router.post('/', (req, res) => {
-    let name = req.body.naam || '';
-    let address = req.body.adres || '';
+    let name = req.body.name || '';
+    let address = req.body.address || '';
 
     let token = req.get('Authorization')
     token = token.substring(7)
@@ -37,17 +37,17 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:huisId?', (req, res) => {
-    const houseId = req.params.huisId || '';
+router.get('/:houseId?', (req, res) => {
+    const houseId = req.params.houseId || '';
     if (houseId) {
         selectId(houseId, res)
     }
 });
 
-router.put('/:huisId', (req, res) => {
-    let houseId = req.params.huisId || '';
-    let name = req.body.naam || '';
-    let address = req.body.adres || '';
+router.put('/:houseId', (req, res) => {
+    let houseId = req.params.houseId || '';
+    let name = req.body.name || '';
+    let address = req.body.address || '';
 
     let token = req.get('Authorization')
     token = token.substring(7)
@@ -60,6 +60,7 @@ router.put('/:huisId', (req, res) => {
             let currentUserId = rows[0].ID
 
             //Get existing user ID
+            checkId(houseId, res)
             db.query("SELECT UserID FROM studentenhuis WHERE ID = ?", [houseId], function (err, rows) {
                 let existingUserId = rows[0].UserID
 
@@ -68,7 +69,7 @@ router.put('/:huisId', (req, res) => {
                         selectId(houseId, res)
                     })
                 }else{
-                    error.notAuthorized(res)
+                    error.InsufficientRights(res)
                 }
             })
         })
@@ -78,22 +79,21 @@ router.put('/:huisId', (req, res) => {
 });
 
 //Delete Dorm
-router.delete('/:huisId', (req, res) => {
-    let houseId = req.params.huisId || '';
-    let name = req.body.naam || '';
-    let address = req.body.adres || '';
+router.delete('/:houseId', (req, res) => {
+    let houseId = req.params.houseId || '';
 
     let token = req.get('Authorization')
     token = token.substring(7)
     let email = auth.decodeToken(token)
     email = email.sub
 
-    if (houseId && name !== '' && address !== '') {
+
         //Get Current user ID
         db.query("SELECT ID FROM user WHERE Email = ?", [email], function (err, rows) {
             let currentUserId = rows[0].ID
 
             //Get existing user ID
+            checkId(houseId, res)
             db.query("SELECT UserID FROM studentenhuis WHERE ID = ?", [houseId], function (err, rows) {
                 let existingUserId = rows[0].UserID
 
@@ -106,13 +106,10 @@ router.delete('/:huisId', (req, res) => {
                         })
                     })
                 }else{
-                    error.notAuthorized(res)
+                    error.InsufficientRights(res)
                 }
             })
         })
-    } else {
-        error.missingProp(res)
-    }
 });
 
 
@@ -120,6 +117,16 @@ function selectId(houseId, res) {
     db.query("SELECT * FROM studentenhuis WHERE ID = ?", [houseId], (err, result) => {
         if (result.length > 0) {
             res.json(result);
+        } else {
+            error.notFound(res)
+        }
+    })
+}
+
+function checkId(houseId,res){
+    db.query("SELECT * FROM studentenhuis WHERE ID = ?", [houseId], (err, result) => {
+        if (result.length > 0) {
+            console.log("exists")
         } else {
             error.notFound(res)
         }
