@@ -175,7 +175,7 @@ describe('Login', function () {
                 "password": "test"
             })
             .end((err, res) => {
-                res.should.have.status(404)
+                res.should.have.status(401)
                 done()
             })
     })

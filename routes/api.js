@@ -38,6 +38,9 @@ router.route('/login').post( function(req, res) {
                 return;
             }
         })
+    }else{
+        error.emailInvalid(res)
+        return;
     }
 });
 
