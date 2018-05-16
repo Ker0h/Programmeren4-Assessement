@@ -65,7 +65,7 @@ router.get('/:deelnemers?', function(req, res)  {
 
 
 
-router.delete('/:deelnemers', (req , res)=> {
+router.delete('/', (req , res)=> {
     let maaltijdId = req.params.maaltijdId || '';
     let huisId = req.params.huisId || '';
     let token = req.get('Authorization')
@@ -81,11 +81,11 @@ router.delete('/:deelnemers', (req , res)=> {
         let userId = rows[0].ID
 
 
-        db.query("SELECT UserID FROM deelnemers WHERE UserID = ?", [userId], function (err, res) {
-            if (res.length > 0) {
-                db.query("DELETE FROM studentenhuis WHERE UserId = ?", userId, function (err, res) {
-                    db.query("SELECT * FROM user WHERE ID = ?", userId, (err, res)=> {
-                        res.json(res)
+        db.query("SELECT UserID FROM deelnemers WHERE UserID = ?", [userId], function (err, resu) {
+            if (resu.length > 0) {
+                db.query("DELETE FROM deelnemers WHERE UserId = ?", userId, function (err, rows) {
+                    db.query("SELECT * FROM user WHERE ID = ?", userId, (err, result)=> {
+                        res.json(result)
                     })
                 })
             }
