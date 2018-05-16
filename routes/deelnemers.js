@@ -84,8 +84,10 @@ router.delete('/', (req , res)=> {
         db.query("SELECT UserID FROM deelnemers WHERE UserID = ?", [userId], function (err, resu) {
             if (resu.length > 0) {
                 db.query("DELETE FROM deelnemers WHERE UserId = ?", userId, function (err, rows) {
-                    db.query("SELECT * FROM user WHERE ID = ?", userId, (err, result)=> {
-                        res.json(result)
+                    res.status(200).json({
+                        "msg": "deelnemer succesvol verwijderd",
+                        "status": "200",
+                        "datetime": new Date().format("d-M-Y H:m:s")
                     })
                 })
             }
