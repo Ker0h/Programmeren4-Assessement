@@ -222,12 +222,9 @@ describe('Studentenhuis API DELETE', function() {
                 
             })
         
-        chai.request(app)
-            .get('/api/studentenhuis')
-            .set('Authorization', validToken)
-            .end((err, res) => {
-                amount = res.body.length
-            })
+        db.query("SELECT MAX(ID) AS ID FROM studentenhuis", (err, rows) => {
+            amount = rows[0].ID
+        })
             
     })
 
