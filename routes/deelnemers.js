@@ -65,31 +65,57 @@ router.get('/:deelnemers?', function(req, res)  {
 
 
 
+router.delete('/:deelnemers', (req , res)=> {
+    let maaltijdId = req.params.maaltijdId || '';
+    let huisId = req.params.huisId || '';
+    let token = req.get('Authorization')
+    token = token.substring(7)
+    let email = auth.decodeToken(token)
+    email = email.sub
+
+    checkId(huisId,res)
+    checkId2(maaltijdId, res)
+
+
+    db.query("SELECT ID FROM user WHERE email = ?;", [email], function (err, rows, fields) {
+        let userId = rows[0].ID
+
+
+        db.query("SELECT UserID FROM deelnemers WHERE UserID = ?", [userId], function (err, res) {
+            if (res.length > 0) {
+                db.query("DELETE FROM studentenhuis WHERE UserId = ?", userId, function (err, res) {
+                    db.query("SELECT * FROM user WHERE ID = ?", userId, (err, res)=> {
+                        res.json(res)
+                    })
+                })
+            }
+            else{
+                error.InsufficientRights(res)
+            }
+
+
+        })
+    })
+})
 
 function checkId(houseId, res) {
-    db.query("SELECT * FROM studentenhuis WHERE ID = ?", [houseId], function (err, result) {
+    db.query("SELECT * FROM studentenhuis WHERE ID = ?", [houseId], (err, result) => {
         if (result.length > 0) {
-            console.log("houseId exists")
-            return res;
+            console.log("selectId")
         } else {
             error.notFound(res)
-            return res;
         }
-
     })
 }
-    function checkId2(maaltijdId, res) {
-    db.query("SELECT * FROM maaltijd WHERE ID = ?", [maaltijdId], function(err, result)  {
+
+function checkId2(maaltijdId, res) {
+    db.query("SELECT * FROM maaltijd WHERE ID = ?", [maaltijdId], (err, result) => {
         if (result.length > 0) {
-            console.log("maaltijdId exists")
-            return res;
+            console.log("selectId")
         } else {
             error.notFound(res)
-            return res;
         }
-
     })
-
 }
 
 module.exports = router
