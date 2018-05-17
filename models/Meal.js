@@ -1,5 +1,6 @@
 class Meal {
-    constructor(name, description, ingredients, allergies, price){
+    constructor(id, name, description, ingredients, allergies, price){
+        this.id = id
         this.name = name
         this.description = description
         this.ingredients = ingredients
